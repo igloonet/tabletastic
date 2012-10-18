@@ -30,7 +30,11 @@ module Tabletastic
         @table_fields = args.empty? ? orm_fields : args.collect {|f| TableField.new(f.to_sym)}
       end
       action_cells(options[:actions], options[:action_prefix])
-      ["\n", head, "\n", body, "\n", footer, "\n"].join("").html_safe
+      parts = ["\n"]
+      parts.push(head, "\n") unless options[:disable_head]
+      parts.push(body, "\n") unless options[:disable_body]
+      parts.push(footer, "\n") unless options[:disable_footer]
+      parts.join("").html_safe
     end
 
     # individually specify a column, which will build up the header,
